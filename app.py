@@ -39,25 +39,39 @@ login_manager.login_view = 'login'
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    balance = db.Column(db.Float, default=0.0, nullable=False)
 
-class Contact(db.Model):
+    # Additional fields can be added as per your app's requirements
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.email}')"
+
+class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    contact_type = db.Column(db.String(15), nullable=False)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=True)
-    email = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(15))
-    address = db.Column(db.String(200))
-    status = db.Column(db.String(10))
-    ip_address = db.Column(db.String(15), nullable=False)
-    vpn_status = db.Column(db.String(15), nullable=True)
-    proxy_status = db.Column(db.String(15), nullable=True)
-    sanction_status = db.Column(db.String(15), nullable=True)
-    breached_status = db.Column(db.String(15), nullable=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    votes = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    user = db.relationship('User', backref=db.backref('contacts', lazy=True)) 
+    user = db.relationship('User', backref=db.backref('projects', lazy=True))
+
+    def __repr__(self):
+        return f"Project('{self.title}', '{self.description}')"
+    
+class Vote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    preference = db.Column(db.String(50), nullable=False)
+
+    project = db.relationship('Project', backref='votes', lazy=True)
+    user = db.relationship('User', backref='votes', lazy=True)
+
+    def __repr__(self):
+        return f"Vote('{self.project_id}', '{self.user_id}', '{self.preference}')"
+
 
 class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)
