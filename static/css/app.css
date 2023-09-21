@@ -68,3 +68,13 @@ a.nav-link-text {
     background-color: black;
     color: white;
 }
+
+.main-header {
+    background-image: url("../images/header-image.jpg");
+    height: 25vh;
+    background-position: left;
+    background-size: cover;
+    color: white;
+    margin-top: -4px;
+    background-color: rgba(0,0,0,0.4);
+}
