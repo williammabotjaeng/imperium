@@ -28,10 +28,18 @@ a.nav-link-button:hover {
     text-decoration: none;
 }
 
+a.nav-link-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .nav-link-text {
-    margin-top: 32px;
+    margin-top: 4px;
     text-decoration: none;
     color: white;
+    justify-content: center;
+    align-items: center;
 }
 
 .nav-link-text:hover {
@@ -42,4 +50,8 @@ a.nav-link-button:hover {
 
 .nav-link-text:visited {
     text-decoration: none;
+}
+
+.nav-icon {
+    font-size: 32px;
 }
