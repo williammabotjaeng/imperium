@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Imperium</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}">
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="top-bar">
+    <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">Startup Web App</li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Content Section -->
+<section>
+    <div class="row">
+        <div class="column">
+            <h2>Content Section</h2>
+            <p>This is the content section of your web app.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="row">
+        <div class="column">
+            <p>&copy; 2023 Startup Web App. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='js/vendor/foundation.min.js') }}"></script>
+<script>
+    $(document).foundation();
+</script>
+
+</body>
+</html>
