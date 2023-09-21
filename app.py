@@ -72,6 +72,14 @@ class Vote(db.Model):
     def __repr__(self):
         return f"Vote('{self.project_id}', '{self.user_id}', '{self.preference}')"
 
+class Price(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    cryptocurrency = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Price('{self.cryptocurrency}', '{self.price}', '{self.timestamp}')"
 
 class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)
