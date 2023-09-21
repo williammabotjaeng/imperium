@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Imperium | A Fair chance for Great Ideas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/imperium.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}">
 </head>
 <body>
 
 <!-- Navigation Bar -->
-<nav class="top-bar">
+<nav class="top-bar" style="padding: 0px">
     <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
             <li class="menu-text">
                 <img width="10%" src="{{ url_for('static', filename='images/imperium-logo.png') }}" alt="logo">
             </li>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+            <li class="align-bottom nav-link-button"><a href="#">Home</a></li>
+            <li class="align-middle nav-link-button"><a href="#">About</a></li>
+            <li class="align-middle nav-link-button"><a href="#">Services</a></li>
+            <li class="align-middle nav-link-button"><a href="#">Contact</a></li>
         </ul>
     </div>
 </nav>

@@ -1,0 +1,10 @@
+li.nav-link-button {
+    text-decoration: none;
+    color: white;
+    background-color: black;
+}
+
+a.nav-link-button {
+    height: 100%;
+    background-color: black;
+}
