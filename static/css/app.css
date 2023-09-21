@@ -77,4 +77,9 @@ a.nav-link-text {
     color: white;
     margin-top: -4px;
     background-color: rgba(0,0,0,0.4);
+    padding: 40px;
+}
+
+.header-text {
+    color: white;
 }
