@@ -45,8 +45,10 @@
                         <h5 class="h5 stat">{{ current_user.primary_network.capitalize() }}</h5>
                     </div>
                     <div>
-                        <h6 class="h6">Wallet Address</h6>
-                        <p class="lead stat small" style="font-size: xx-small;">{{ current_user.wallet_address }}</p>
+                        <h6 class="h6">Master Key</h6>
+                        <div class="reveal-key">
+                            <input class="input" type="text" value="{{ current_user.master_key }}" readonly>
+                        </div>
                     </div>
                 </div>
                 <br>
