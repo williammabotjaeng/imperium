@@ -205,7 +205,7 @@ def contact():
         msg = Message(
             subject="New Message from Contact Form",
             sender=app.config["MAIL_USERNAME"],
-            recipients=["topolockapp@gmail.com"],
+            recipients=[app.config["MAIL_USERNAME"]],
             body=f"Name: {name}\nEmail: {email}\nMessage: {message}"
         )
 
