@@ -44,6 +44,7 @@ class User(UserMixin, db.Model):
     wallet_address = db.Column(db.String(100), unique=True, nullable=True)  
     wallet_name = db.Column(db.String(100), unique=True, nullable=True)  
     primary_network = db.Column(db.String(500), nullable=True) 
+    primary_account = db.Column(db.String(500), nullable=True) 
     master_key = db.Column(db.String(500), unique=True, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
@@ -210,6 +211,7 @@ def create_wallet():
     current_user.wallet_name = wallet_name
     current_user.balance = wallet.balance(as_string=True)
     current_user.primary_network = wallet.network_list()[0]
+    current_user.primary_account = wallet.accounts()[0]
     current_user.master_key = str(wallet.public_master().wif)
     db.session.commit()
 
