@@ -97,7 +97,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=100)])
+    email = StringField('Email', validators=[InputRequired(), Length(min=4, max=100)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=64)])
 
 class RegistrationForm(FlaskForm):
@@ -134,7 +134,7 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            username = form.emaikl.data
+            email = form.email.data
             password = form.password.data
 
             user = User.query.filter_by(email=email).first()
