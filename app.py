@@ -9,11 +9,12 @@ from wtforms.validators import InputRequired, Length, DataRequired, Email
 from dotenv import load_dotenv
 from datetime import datetime
 
+from bitcoin.wallet import CBitcoinSecret, P2PKHBitcoinAddress
+from bitcoin.rpc import Proxy
+
 import moment
 import requests
 import os
-
-
 
 app = Flask(__name__)
 
