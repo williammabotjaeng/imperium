@@ -8,8 +8,8 @@
           </div>
     </div>
     <div class="col reg-right-form">
-        <h3 class="h3 subheader">Sign in to your Account</h3>
-        <form action="{{ url_for('login') }}" method="POST">
+        <h3 class="h3 subheader">Create a New Account</h3>
+        <form action="{{ url_for('register') }}" method="POST">
             {{ form.csrf_token }}
             
             <div class="grid-container">
@@ -25,9 +25,9 @@
                   {{ form.password(class="form-control") }}
                 </div>
               </div>
-              <button type="submit" class="button">Login</button>
+              <button type="submit" class="button">Register</button>
             </div>
-            <span>Not yet Registered? <a href="{{ url_for('register') }}">Register</a></span>
+            <span>Already Registered? <a href="{{ url_for('login') }}">Login</a></span>
           </form>
     </div>
 </div>
