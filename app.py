@@ -191,8 +191,6 @@ def register():
 @login_required
 @app.route("/home")
 def home():
-    if current_user.wallet_name:
-        wallet = Wallet(current_user.wallet_name)
     return render_template("home.html", current_user=current_user)
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
