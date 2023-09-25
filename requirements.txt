@@ -9,3 +9,4 @@ gunicorn
 Flask-Mail
 moment
 python-bitcoinlib
+sphinx
