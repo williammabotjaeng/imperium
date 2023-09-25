@@ -6,7 +6,7 @@
 <div class="row main-content">
     <div class="col left-form">
         <h3 class="h3 subheader">Get Started Today!</h3>
-        <form action="{{ url_for('login') }}" method="POST">
+        <form action="{{ url_for('register') }}" method="POST">
             {{ form.csrf_token }}
             
             <div class="grid-container">
@@ -22,8 +22,9 @@
                   {{ form.password(class="form-control") }}
                 </div>
               </div>
-              <button type="submit" class="button">Login</button>
+              <button type="submit" class="button">Register</button>
             </div>
+            <span>Already Registered? <a href="{{ url_for('login') }}">Login</a></span>
           </form>
     </div>
     <div class="col right-cta">
