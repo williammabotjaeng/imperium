@@ -148,7 +148,7 @@ a.nav-link-text {
 .reg-left-cta {
     width: 50%;
     float: left;
-    background-image: url("../images/login-bg.png");
+    background-image: url("../images/reg-bg.png");
     background-color: rgba(255, 255, 255, 0.5);
     background-size: cover;
     padding: 10px;
@@ -164,7 +164,7 @@ a.nav-link-text {
 .contact-left-cta {
     width: 50%;
     float: left;
-    background-image: url("../images/login-bg.png");
+    background-image: url("../images/contact-bg.png");
     background-color: rgba(255, 255, 255, 0.5);
     background-size: cover;
     padding: 10px;
@@ -172,4 +172,43 @@ a.nav-link-text {
 
 .home-main-content {
     padding: 20px;
+}
+
+.black-text {
+    color: black !important;
+}
+
+.black-text:hover {
+    color: black !important;
+}
+
+.empty-state-wallet {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.wallet-area-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wallet-area-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wallet-area-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right-border {
+    border-right: 1px solid black;
 }

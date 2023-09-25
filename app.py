@@ -8,12 +8,11 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Selec
 from wtforms.validators import InputRequired, Length, DataRequired, Email
 from dotenv import load_dotenv
 from datetime import datetime
+from bitcoinlib.wallets import Wallet
 
 import moment
 import requests
 import os
-
-
 
 app = Flask(__name__)
 
@@ -41,12 +40,18 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(20), unique=True, nullable=True)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=0.0, nullable=True)
+    balance = db.Column(db.String(100), nullable=True)
+    wallet_address = db.Column(db.String(100), unique=True, nullable=True)  
+    wallet_name = db.Column(db.String(100), unique=True, nullable=True)  
+    primary_network = db.Column(db.String(500), nullable=True) 
+    primary_account = db.Column(db.String(500), nullable=True) 
+    master_key = db.Column(db.String(500), unique=True, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -186,8 +191,31 @@ def register():
 @login_required
 @app.route("/home")
 def home():
-   
+    if current_user.wallet_name:
+        wallet = Wallet(current_user.wallet_name)
     return render_template("home.html", current_user=current_user)
+
+@app.route("/create_wallet", methods=['GET', 'POST'])
+@login_required 
+def create_wallet():
+    if current_user.wallet_address:
+        return redirect(url_for('home')) 
+
+    # Generate wallet and get the address
+    wallet_name = f"KibisisImperium{current_user.id}"
+    wallet = Wallet.create(wallet_name)
+    wallet_address = wallet.get_key().address
+
+    # Save the wallet address to the current user's database record
+    current_user.wallet_address = wallet_address
+    current_user.wallet_name = wallet_name
+    current_user.balance = wallet.balance(as_string=True)
+    current_user.primary_network = wallet.network_list()[0]
+    current_user.primary_account = wallet.accounts()[0]
+    current_user.master_key = str(wallet.public_master().wif)
+    db.session.commit()
+
+    return redirect(url_for('home')) 
 
 @app.route("/what")
 def what():

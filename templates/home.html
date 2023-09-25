@@ -2,19 +2,77 @@
 {% block content %}
 <div class="row home-main-content">
     <div>
-      <ul class="tabs" data-tabs id="example-tabs">
-        <li class="tabs-title is-active"><a href="#overview" aria-selected="true">Overview</a></li>
-        <li class="tabs-title"><a href="#projects">Project Proposals</a></li>
-        <li class="tabs-title"><a href="#voting">Voting Power</a></li>
-        <li class="tabs-title"><a href="#trading" aria-selected="true">Peer-to-Peer Trading</a></li>
-        <li class="tabs-title"><a href="#notifications">Notifications & Updates</a></li>
-        <li class="tabs-title"><a href="#analytics">Analytics & Insights</a></li>
-        <li class="tabs-title"><a href="#settings">Settings</a></li>
+      <ul class="tabs black-text" data-tabs id="example-tabs">
+        <li class="tabs-title is-active black-text"><a href="#overview" aria-selected="true">Overview</a></li>
+        <li class="tabs-title black-text"><a href="#projects">Project Proposals</a></li>
+        <li class="tabs-title black-text"><a href="#voting">Voting Power</a></li>
+        <li class="tabs-title black-text"><a href="#trading" aria-selected="true">Peer-to-Peer Trading</a></li>
+        <li class="tabs-title black-text"><a href="#notifications">Notifications & Updates</a></li>
+        <li class="tabs-title black-text"><a href="#analytics">Analytics & Insights</a></li>
+        <li class="tabs-title black-text"><a href="#settings">Settings</a></li>
       </ul>
     </div>
     <div class="tabs-content" data-tabs-content="example-tabs">
         <div class="tabs-panel is-active" id="overview">
-          <p>This is the content of Overview.</p>
+          {% if not current_user.wallet_address %}
+            <div class="empty-state-wallet">
+                <h1>You Currently do not have a Wallet!</h1>
+                <p>What would you like to do?</p>
+                <div>
+                    <h3><a href="/create_wallet">Create a New Wallet</a></h3> 
+                    <h2>or</h2>
+                    <h3><a href="">Assign an Existing Wallet</a></h3>
+                </div>
+            </div>
+          {% else %}
+            <div class="grid-x grid-padding-x align-stretch">
+                <div class="border cell small-4 primary right-border">
+                <h4 class="h4">Wallet</h4>
+                <div class="wallet-area-top">
+                    <div>
+                        <h6 class="h6">Balance</h6>
+                        <h5 class="h5 stat">{{ current_user.balance }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Wallet Address</h6>
+                        <p class="lead stat small" style="font-size: xx-small;">{{ current_user.wallet_address }}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="wallet-area-center">
+                    <div>
+                        <h6 class="h6">Network</h6>
+                        <h5 class="h5 stat">{{ current_user.primary_network.capitalize() }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Master Key</h6>
+                        <div class="reveal-key">
+                            <input class="input" type="text" value="{{ current_user.master_key }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="wallet-area-bottom">
+                    <div>
+                        <h6 class="h6">Account Index</h6>
+                        <h5 class="h5 stat">{{ current_user.primary_account }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Imperium Code</h6>
+                        <p class="lead stat small" style="font-size: x-small;">{{ current_user.wallet_name }}</p>
+                    </div>
+                </div>
+                </div>
+                <div class="cell small-4 secondary right-border">
+                <h4 class="h4">Transactions</h4>
+                <!-- Content for Section B goes here -->
+                </div>
+                <div class="cell small-4 info">
+                <h4 class="h4">Trade</h4>
+                <!-- Content for Section C goes here -->
+                </div>
+            </div>
+          {% endif %}
         </div>
         <div class="tabs-panel" id="projects">
           <p>This is the content of Projects.</p>
