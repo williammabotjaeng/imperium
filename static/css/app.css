@@ -173,3 +173,11 @@ a.nav-link-text {
 .home-main-content {
     padding: 20px;
 }
+
+.black-text {
+    color: black !important;
+}
+
+.black-text:hover {
+    color: black !important;
+}
