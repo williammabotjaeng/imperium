@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.Float, default=0.0, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
+    projects = db.relationship('Project', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -53,8 +54,6 @@ class Project(db.Model):
     description = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     project_votes = db.relationship('Vote', backref='project', lazy=True)
-
-    user = db.relationship('User', backref=db.backref('projects', lazy=True))
 
     def __repr__(self):
         return f"Project('{self.title}', '{self.description}')"
