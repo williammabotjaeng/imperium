@@ -3,5 +3,31 @@
 <header class="main-header header">
     <h3 class="header-text">Decentralized Angel Investor Bitcoin Exchange: Empowering the Community</h3>
 </header>
+<div class="row main-content">
+    <div class="col left-form">
+        <h3 class="h3 subheader">Get Started Today!</h3>
+        <form action="{{ url_for('login') }}" method="POST">
+            {{ form.csrf_token }}
+            
+            <div class="grid-container">
+              <div class="grid-x grid-margin-x">
+                <div class="cell">
+                  {{ form.username.label(class="form-label") }}
+                  {{ form.username(class="form-control") }}
+                </div>
+              </div>
+              <div class="grid-x grid-margin-x">
+                <div class="cell">
+                  {{ form.password.label(class="form-label") }}
+                  {{ form.password(class="form-control") }}
+                </div>
+              </div>
+              <button type="submit" class="button">Login</button>
+            </div>
+          </form>
+    </div>
+    <div class="col right-cta">
 
+    </div>
+</div>
 {% endblock %}

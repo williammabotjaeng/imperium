@@ -83,3 +83,20 @@ a.nav-link-text {
 .header-text {
     color: white;
 }
+
+.main-content {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.left-form {
+    width: 40%;
+    float: left;
+    padding: 20px;
+}
+
+.right-cta {
+    width: 60%;
+    float: right;
+}
