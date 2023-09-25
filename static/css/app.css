@@ -181,3 +181,8 @@ a.nav-link-text {
 .black-text:hover {
     color: black !important;
 }
+
+.empty-state-wallet {
+    justify-content: center;
+    align-items: center;
+}

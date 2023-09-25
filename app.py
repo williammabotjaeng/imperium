@@ -40,11 +40,13 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.Float, default=0.0, nullable=True)
+    wallet_address = db.Column(db.String(100), unique=True, nullable=True)  
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
