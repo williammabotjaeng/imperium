@@ -25,8 +25,19 @@
                 </div>
             </div>
           {% else %}
-            <div>
-                <h1>The Wallet Address: {{ current_user.wallet_address }}</h1>
+            <div class="grid-x grid-padding-x align-stretch">
+                <div class="cell small-4 primary">
+                <h4 class="h4">Wallet</h4>
+                <!-- Content for Section A goes here -->
+                </div>
+                <div class="cell small-4 secondary">
+                <h4 class="h4">Transactions</h4>
+                <!-- Content for Section B goes here -->
+                </div>
+                <div class="cell small-4 info">
+                <h4 class="h4">Trade</h4>
+                <!-- Content for Section C goes here -->
+                </div>
             </div>
           {% endif %}
         </div>

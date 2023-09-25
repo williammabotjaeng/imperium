@@ -40,8 +40,10 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(20), unique=True, nullable=True)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=0.0, nullable=True)
+    balance = db.Column(db.String(100), nullable=True)
     wallet_address = db.Column(db.String(100), unique=True, nullable=True)  
+    wallet_name = db.Column(db.String(100), unique=True, nullable=True)  
+    wallet_info = db.Column(db.String(500), unique=True, nullable=True)  
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
 
@@ -187,7 +189,9 @@ def register():
 @login_required
 @app.route("/home")
 def home():
-    return render_template("home.html", current_user=current_user)
+    if current_user.wallet_name:
+        wallet = Wallet(current_user.wallet_name)
+    return render_template("home.html", current_user=current_user, wallet=wallet)
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
@@ -196,14 +200,18 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet = Wallet.create('Wallet1')
+    wallet_name = f"ImperiumWallet{current_user.id}"
+    wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 
     # Save the wallet address to the current user's database record
     current_user.wallet_address = wallet_address
+    current_user.wallet_name = wallet_name
+    current_user.wallet_info = wallet.info()
+    current_user.balance = wallet.balance(as_string=True)
     db.session.commit()
 
-    return redirect(url_for('home'))  
+    return render_template("home.html", wallet=wallet) 
 
 @app.route("/what")
 def what():
