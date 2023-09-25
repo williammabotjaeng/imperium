@@ -90,13 +90,17 @@ a.nav-link-text {
     padding: 20px;
 }
 
-.left-form {
+.right-form {
     width: 40%;
-    float: left;
+    float: right;
     padding: 20px;
 }
 
-.right-cta {
+.left-cta {
     width: 60%;
-    float: right;
+    float: left;
+    background-image: url("../images/home-bg.png");
+    background-color: rgba(255, 255, 255, 0.5);
+    background-size: cover;
+    padding: 10px;
 }

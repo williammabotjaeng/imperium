@@ -4,7 +4,14 @@
     <h3 class="header-text">Decentralized Angel Investor Bitcoin Exchange: Empowering the Community</h3>
 </header>
 <div class="row main-content">
-    <div class="col left-form">
+    <div class="col left-cta">
+        <div class="call-to-action">
+            <h3 class="h3">Experience the future of decentralized finance and angel investing with the Decentralized Angel Investor Bitcoin Exchange.</h3>
+            <p>Join our groundbreaking platform that combines the power of blockchain, smart contracts, and artificial intelligence to empower the cryptocurrency community.</p>
+            <p>At our core, we are a Distributed Autonomous Organization (DAO) that ensures every member has an equal say in decision-making. Say goodbye to centralized control as our democratic approach gives you a voice in funding the most promising projects.</p>
+          </div>
+    </div>
+    <div class="col right-form">
         <h3 class="h3 subheader">Get Started Today!</h3>
         <form action="{{ url_for('register') }}" method="POST">
             {{ form.csrf_token }}
@@ -26,9 +33,6 @@
             </div>
             <span>Already Registered? <a href="{{ url_for('login') }}">Login</a></span>
           </form>
-    </div>
-    <div class="col right-cta">
-
     </div>
 </div>
 {% endblock %}
