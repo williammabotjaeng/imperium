@@ -187,3 +187,28 @@ a.nav-link-text {
     align-items: center;
     text-align: center;
 }
+
+.wallet-area-top {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wallet-area-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wallet-area-bottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right-border {
+    border-right: 1px solid black;
+}

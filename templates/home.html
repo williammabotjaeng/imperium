@@ -26,11 +26,42 @@
             </div>
           {% else %}
             <div class="grid-x grid-padding-x align-stretch">
-                <div class="cell small-4 primary">
+                <div class="border cell small-4 primary right-border">
                 <h4 class="h4">Wallet</h4>
-                <!-- Content for Section A goes here -->
+                <div class="wallet-area-top">
+                    <div>
+                        <h6 class="h6">Balance</h6>
+                        <h5 class="h5 stat">{{ current_user.balance }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Wallet Address</h6>
+                        <p class="lead stat small" style="font-size: xx-small;">{{ current_user.wallet_address }}</p>
+                    </div>
                 </div>
-                <div class="cell small-4 secondary">
+                <br>
+                <div class="wallet-area-center">
+                    <div>
+                        <h6 class="h6">Network</h6>
+                        <h5 class="h5 stat">{{ current_user.primary_network.capitalize() }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Wallet Address</h6>
+                        <p class="lead stat small" style="font-size: xx-small;">{{ current_user.wallet_address }}</p>
+                    </div>
+                </div>
+                <br>
+                <div class="wallet-area-bottom">
+                    <div>
+                        <h6 class="h6">Balance</h6>
+                        <h5 class="h5 stat">{{ current_user.balance }}</h5>
+                    </div>
+                    <div>
+                        <h6 class="h6">Wallet Address</h6>
+                        <p class="lead stat small" style="font-size: xx-small;">{{ current_user.wallet_address }}</p>
+                    </div>
+                </div>
+                </div>
+                <div class="cell small-4 secondary right-border">
                 <h4 class="h4">Transactions</h4>
                 <!-- Content for Section B goes here -->
                 </div>
