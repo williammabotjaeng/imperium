@@ -38,12 +38,11 @@ login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    username = db.Column(db.String(20), unique=True, nullable=True)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    balance = db.Column(db.Float, default=0.0, nullable=False)
-
-    # Additional fields can be added as per your app's requirements
+    balance = db.Column(db.Float, default=0.0, nullable=True)
+    user_votes = db.relationship('Vote', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -52,25 +51,25 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    votes = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    project_votes = db.relationship('Vote', backref='project', lazy=True)
 
     user = db.relationship('User', backref=db.backref('projects', lazy=True))
 
     def __repr__(self):
         return f"Project('{self.title}', '{self.description}')"
-    
+
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     preference = db.Column(db.String(50), nullable=False)
 
-    project = db.relationship('Project', backref='votes', lazy=True)
-    user = db.relationship('User', backref='votes', lazy=True)
+    project_vote = db.relationship('Project', backref='votes', lazy=True)
 
     def __repr__(self):
         return f"Vote('{self.project_id}', '{self.user_id}', '{self.preference}')"
+
 
 class Price(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -102,7 +101,7 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=64)])
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(), Length(min=4, max=100)])
+    email = StringField('Email', validators=[InputRequired(), Length(min=4, max=100)])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=64)])
 
 class ContactForm(FlaskForm):
@@ -135,10 +134,10 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         if form.validate_on_submit():
-            username = form.username.data
+            username = form.emaikl.data
             password = form.password.data
 
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(email=email).first()
             
             if not user or not check_password_hash(user.password, password):
                 flash('Please check your login details and try again.')
@@ -157,15 +156,15 @@ def register():
    
     if request.method == 'POST':
         if form.validate_on_submit():
-            username = form.username.data
+            email = form.email.data
             password = form.password.data
 
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(email=email).first()
             if user:
                 flash('Username already exists. Please choose a different one.')
                 return redirect(url_for('login'))
 
-            new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
+            new_user = User(email=email, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
           
@@ -173,13 +172,13 @@ def register():
             msg = Message(
                 subject="Welcome to TopoLock!",
                 sender=app.config["MAIL_USERNAME"],
-                recipients=[username],
-                body=f"Hi {username},\n\nThank you for registering on our website. We are excited to have you as a member!\n\nBest regards,\nTopoLock Team"
+                recipients=[email],
+                body=f"Hi {email},\n\nThank you for registering on our website. We are excited to have you as a member!\n\nBest regards,\nTopoLock Team"
             )
             mail.send(msg)
 
             flash('Registration successful! An email has been sent to your email address.')
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(email=email).first()
             login_user(user)
             print("User Created")
             return redirect(url_for('home'))
@@ -188,11 +187,8 @@ def register():
 @login_required
 @app.route("/home")
 def home():
-    form = ContactForm()
-    contacts = Contact.query.filter_by(user_id=current_user.id).all()
-    trusted_contacts = Contact.query.filter_by(user_id=current_user.id, status="Trusted").all()
-    untrusted_contacts = Contact.query.filter_by(user_id=current_user.id, status="Untrusted").all()
-    return render_template("home.html", current_user=current_user, form=form, contacts=contacts, trusted_contacts=trusted_contacts, untrusted_contacts=untrusted_contacts)
+   
+    return render_template("home.html", current_user=current_user)
 
 @app.route("/what")
 def what():
