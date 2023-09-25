@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row contact-main-content">
+    <div class="contact-left-cta">
+        <div class="card">
+            <div class="card-content">
+                <h1 class="h1">
+                    “A Fair Chance for Great Ideas”
+                </h1>
+            </div>
+            {% if not current_user.is_authenticated %}
+            <footer class="card-footer">
+                <p class="card-footer-item">
+                    <span>
+                        Already Registered? <a href="/login">Login</a>
+                    </span>
+                </p>
+                <p class="card-footer-item">
+                    <span>
+                        New User? <a href="/register">Sign Up</a>
+                    </span>
+                </p>
+            </footer>
+            {% endif %}
+        </div>
+    </div>
+    <div class="contact-right-form">
+        <div class="login-area" style="margin-top: -10px">
+            <h2 class="h2 subheader">Get in Touch</h2>
+            <br>
+            <form method="POST" action="{{ url_for('contact') }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.name.label }} {{ form.name(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label }} {{ form.email(class="form-control") }}
+                </div>
+                <br />
+                <div class="form-group">
+                    {{ form.message.label }} {{ form.message(class="form-control tall-textarea") }}
+                </div>
+                <button type="submit" class="button secondary">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
