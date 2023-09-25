@@ -19,13 +19,15 @@
                 <h1>You Currently do not have a Wallet!</h1>
                 <p>What would you like to do?</p>
                 <div>
-                    <h3>Create a New Wallet</h3> 
+                    <h3><a href="/create_wallet">Create a New Wallet</a></h3> 
                     <h2>or</h2>
-                    <h3>Assign an Existing Wallet</h3>
+                    <h3><a href="">Assign an Existing Wallet</a></h3>
                 </div>
             </div>
           {% else %}
-
+            <div>
+                <h1>The Wallet Address: {{ current_user.wallet_address }}</h1>
+            </div>
           {% endif %}
         </div>
         <div class="tabs-panel" id="projects">

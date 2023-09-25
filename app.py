@@ -8,6 +8,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Selec
 from wtforms.validators import InputRequired, Length, DataRequired, Email
 from dotenv import load_dotenv
 from datetime import datetime
+from bitcoinlib.wallets import Wallet
 
 import moment
 import requests
@@ -186,8 +187,23 @@ def register():
 @login_required
 @app.route("/home")
 def home():
-   
     return render_template("home.html", current_user=current_user)
+
+@app.route("/create_wallet", methods=['GET', 'POST'])
+@login_required 
+def create_wallet():
+    if current_user.wallet_address:
+        return redirect(url_for('home')) 
+
+    # Generate wallet and get the address
+    wallet = Wallet.create('Wallet1')
+    wallet_address = wallet.get_key().address
+
+    # Save the wallet address to the current user's database record
+    current_user.wallet_address = wallet_address
+    db.session.commit()
+
+    return redirect(url_for('home'))  
 
 @app.route("/what")
 def what():
