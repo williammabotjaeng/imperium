@@ -1,6 +1,23 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div class="row main-content">
-    <h1>The Dashboard</h1>
+<div class="row home-main-content">
+    <div>
+      <ul class="tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#overview" aria-selected="true">Overview</a></li>
+        <li class="tabs-title"><a href="#projects">Project Proposals</a></li>
+        <li class="tabs-title"><a href="#voting">Voting Power</a></li>
+      </ul>
+    </div>
+    <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="overview">
+          <p>This is the content of Tab 1.</p>
+        </div>
+        <div class="tabs-panel" id="projects">
+          <p>This is the content of Tab 2.</p>
+        </div>
+        <div class="tabs-panel" id="voting">
+          <p>This is the content of Tab 3.</p>
+        </div>
+    </div>
 </div>
 {% endblock %}
