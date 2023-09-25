@@ -125,3 +125,18 @@ a.nav-link-text {
     background-size: cover;
     padding: 10px;
 }
+
+.reg-right-form {
+    width: 50%;
+    float: right;
+    padding: 20px;
+}
+
+.reg-left-cta {
+    width: 50%;
+    float: left;
+    background-image: url("../images/login-bg.png");
+    background-color: rgba(255, 255, 255, 0.5);
+    background-size: cover;
+    padding: 10px;
+}

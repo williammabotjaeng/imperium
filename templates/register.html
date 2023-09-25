@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="row login-main-content">
+    <div class="col reg-left-cta">
+        <div class="call-to-action">
+            <h3 class="h3">Our voting-based funding system promotes innovation and growth within the cryptocurrency space.</h3>
+            <p>Projects present their proposals and members cast their votes based on merit and potential. The highest voted projects receive funding, ensuring investments are directed towards ventures with community support.</p>
+          </div>
+    </div>
+    <div class="col reg-right-form">
+        <h3 class="h3 subheader">Sign in to your Account</h3>
+        <form action="{{ url_for('login') }}" method="POST">
+            {{ form.csrf_token }}
+            
+            <div class="grid-container">
+              <div class="grid-x grid-margin-x">
+                <div class="cell">
+                  {{ form.username.label(class="form-label") }}
+                  {{ form.username(class="form-control") }}
+                </div>
+              </div>
+              <div class="grid-x grid-margin-x">
+                <div class="cell">
+                  {{ form.password.label(class="form-label") }}
+                  {{ form.password(class="form-control") }}
+                </div>
+              </div>
+              <button type="submit" class="button">Login</button>
+            </div>
+            <span>Not yet Registered? <a href="{{ url_for('register') }}">Register</a></span>
+          </form>
+    </div>
+</div>
+{% endblock %}
