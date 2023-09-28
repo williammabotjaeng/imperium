@@ -78,8 +78,10 @@
                 </div>
                 <div class="cell small-4 info">
                 <h4 class="h4">Accounts</h4>
-                {% if current_user.transactions|length > 0 %}
-
+                {% if current_user.accounts|length > 0 %}
+                    {% for account in current_user.accounts %}
+                        <p class="bold">Account: {{ account }}</p>
+                    {% endfor %}
                 {% else %}
                 <div class="transactions-empty-state">
                     <h3 class="h3 lead">
