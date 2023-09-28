@@ -74,7 +74,7 @@
                     <h3 class="h3 lead">
                         There are currently No Transactions
                     </h3>
-                    <h4><a href="/trade">Get Started!</a></h4>
+                    <h4><a href="#trading"  aria-selected="true">Get Started!</a></h4>
                 </div>
                 {% endif %}
                 </div>
@@ -97,7 +97,18 @@
           {% endif %}
         </div>
         <div class="tabs-panel" id="projects">
-          <p>This is the content of Projects.</p>
+            <h4 class="h4">Project Proposals</h4>
+            {% if projects|length > 0 %}
+                    {% for project in projects %}
+                        <p class="lead h5"><a href="">{{ project }}</a></p>
+                    {% endfor %}
+            {% else %}
+            <div class="projects-empty-state">
+                <h3>There are Currently no Projects!</h3>
+                <br>
+                <h4><a href="#">Create or Refer a New Project?</a></h4>
+            </div>
+            {% endif %}
         </div>
         <div class="tabs-panel" id="voting">
           <p>This is the content of Voting.</p>

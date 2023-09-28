@@ -191,10 +191,10 @@ def register():
             return redirect(url_for('home'))
     return render_template("register.html", form=form)
 
-@login_required
 @app.route("/home")
 def home():
-    return render_template("home.html", current_user=current_user)
+    projects = Project.query.all()  
+    return render_template("home.html", projects=projects)
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
