@@ -41,16 +41,19 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.String(100), nullable=True)
-    wallet_address = db.Column(db.String(100), unique=True, nullable=True)  
-    wallet_name = db.Column(db.String(100), unique=True, nullable=True)  
-    primary_network = db.Column(db.String(500), nullable=True) 
-    primary_account = db.Column(db.String(500), nullable=True) 
+    wallet_address = db.Column(db.String(100), unique=True, nullable=True)
+    wallet_name = db.Column(db.String(100), unique=True, nullable=True)
+    primary_network = db.Column(db.String(500), nullable=True)
+    primary_account = db.Column(db.String(500), nullable=True)
     master_key = db.Column(db.String(500), unique=True, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
+    transactions = db.Column(db.PickleType, nullable=True)  
+    accounts = db.Column(db.PickleType, nullable=True)  
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
 
 
 class Project(db.Model):
@@ -200,7 +203,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis{current_user.id}"
+    wallet_name = f"TheImperiumKibisis00{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 
@@ -211,6 +214,9 @@ def create_wallet():
     current_user.primary_network = wallet.network_list()[0]
     current_user.primary_account = wallet.accounts()[0]
     current_user.master_key = str(wallet.public_master().wif)
+    current_user.transactions = wallet.transactions()
+    current_user.accounts = wallet.accounts()
+    
     db.session.commit()
 
     return redirect(url_for('home')) 

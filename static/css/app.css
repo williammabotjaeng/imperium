@@ -212,3 +212,8 @@ a.nav-link-text {
 .right-border {
     border-right: 1px solid black;
 }
+
+.transactions-empty-state {
+    text-align: center;
+    padding: 40px;
+}

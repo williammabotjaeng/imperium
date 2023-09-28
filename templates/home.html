@@ -65,11 +65,29 @@
                 </div>
                 <div class="cell small-4 secondary right-border">
                 <h4 class="h4">Transactions</h4>
-                <!-- Content for Section B goes here -->
+                {% if current_user.transactions|length > 0 %}
+
+                {% else %}
+                <div class="transactions-empty-state">
+                    <h3 class="h3 lead">
+                        There are currently No Transactions
+                    </h3>
+                    <h4><a href="/trade">Get Started!</a></h4>
+                </div>
+                {% endif %}
                 </div>
                 <div class="cell small-4 info">
-                <h4 class="h4">Trade</h4>
-                <!-- Content for Section C goes here -->
+                <h4 class="h4">Accounts</h4>
+                {% if current_user.transactions|length > 0 %}
+
+                {% else %}
+                <div class="transactions-empty-state">
+                    <h3 class="h3 lead">
+                        There are currently No Accounts
+                    </h3>
+                    <h4><a href="/create_wallet">Create a Wallet!</a></h4>
+                </div>
+                {% endif %}
                 </div>
             </div>
           {% endif %}
