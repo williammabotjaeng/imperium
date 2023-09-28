@@ -66,7 +66,9 @@
                 <div class="cell small-4 secondary right-border">
                 <h4 class="h4">Transactions</h4>
                 {% if current_user.transactions|length > 0 %}
-
+                    {% for transaction in current_user.transactions %}
+                        <p class="lead h5">{{ transaction }}</p>
+                    {% endfor %}
                 {% else %}
                 <div class="transactions-empty-state">
                     <h3 class="h3 lead">
@@ -80,7 +82,7 @@
                 <h4 class="h4">Accounts</h4>
                 {% if current_user.accounts|length > 0 %}
                     {% for account in current_user.accounts %}
-                        <p class="bold">Account: {{ account }}</p>
+                        <p class="lead h5">Account: {{ account }}</p>
                     {% endfor %}
                 {% else %}
                 <div class="transactions-empty-state">
