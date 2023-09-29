@@ -228,3 +228,11 @@ a.nav-link-text {
     flex-direction: row;
     justify-content: space-evenly;
 }
+
+.main-voting {
+    text-align: center;
+}
+
+.text-success {
+    color: #157539 !important;
+}

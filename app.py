@@ -46,6 +46,7 @@ class User(UserMixin, db.Model):
     primary_network = db.Column(db.String(500), nullable=True)
     primary_account = db.Column(db.String(500), nullable=True)
     master_key = db.Column(db.String(500), unique=True, nullable=True)
+    voting_power = db.Column(db.Integer, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
     transactions = db.Column(db.PickleType, nullable=True)  
@@ -203,7 +204,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis00{current_user.id}"
+    wallet_name = f"TheImperiumKibisis000{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 
