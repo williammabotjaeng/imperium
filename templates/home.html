@@ -111,32 +111,30 @@
             {% endif %}
         </div>
         <div class="tabs-panel" id="voting">
-            <div class="ecommerce-section">
-                <h2>Votes</h2>
-                <p class="vote-price">One vote is worth 0.01 Bitcoin</p>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Package</h3>
-                  <p class="description">Get a package of 100 votes</p>
-                  <p class="price">Price: 1 Bitcoin</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Bundle</h3>
-                  <p class="description">Get a bundle of 500 votes</p>
-                  <p class="price">Price: 5 Bitcoins</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Mega Pack</h3>
-                  <p class="description">Get a mega pack of 1000 votes</p>
-                  <p class="price">Price: 10 Bitcoins</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
+            <div class="ecommerce-section row small-up-1 medium-up-3">
+              <div class="column">
+                <img height="250" width="270" src="{{ url_for('static', filename='images/vote-image-1.jpg') }}" alt="Vote Image">
+                <h3>Vote Package</h3>
+                <p class="description">Get a single vote</p>
+                <p class="price">Price: 0.01 Bitcoin</p>
+                <button class="button add-to-cart success">Add to Cart</button>
               </div>
-        </div>
+              <div class="column">
+                <img height="320" width="270" src="{{ url_for('static', filename='images/vote-image-2.jpg') }}" alt="Vote Image">
+                <h3>Vote Centurion Pack</h3>
+                <p class="description">Get a bundle of 100 votes</p>
+                <p class="price">Price: 1 Bitcoin</p>
+                <button class="button add-to-cart success">Add to Cart</button>
+              </div>
+              <div class="column">
+                <img height="200" width="230" src="{{ url_for('static', filename='images/vote-image-3.jpg') }}" alt="Vote Image">
+                <h3>Vote Mega Pack</h3>
+                <p class="description">Get a mega pack of 500 votes</p>
+                <p class="price">Price: 5 Bitcoins</p>
+                <button class="button add-to-cart success">Add to Cart</button>
+              </div>
+            </div>
+          </div>          
         <div class="tabs-panel" id="trading">
             <p>This is the content of Trading.</p>
         </div>
