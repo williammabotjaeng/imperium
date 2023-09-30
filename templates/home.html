@@ -138,10 +138,10 @@
             </div>
           </div>          
         <div class="tabs-panel" id="trading">
-            <h4 class="h4">Peer-to-Peer Trading</h4>
+            <h4 class="h4">Peers</h4>
             {% if users|length > 0 %}
                     {% for user in users %}
-                        <p class="lead h5"><a href="">{{ user }}</a></p>
+                        <p class="lead h5"><a href="">{{ user.username }}</a></p>
                     {% endfor %}
             {% else %}
             <div class="projects-empty-state">

@@ -94,6 +94,7 @@ class User(UserMixin, db.Model):
     projects = db.relationship('Project', backref='user', lazy=True)
     transactions = db.Column(db.PickleType, nullable=True)  
     accounts = db.Column(db.PickleType, nullable=True)  
+    assets_for_sale = db.Column(db.PickleType, nullable=True)  
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
