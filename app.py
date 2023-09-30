@@ -273,7 +273,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis0000{current_user.id}"
+    wallet_name = f"TheImperiumKibisis230{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 
