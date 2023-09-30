@@ -236,3 +236,21 @@ a.nav-link-text {
 .text-success {
     color: #157539 !important;
 }
+
+.settings-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.left-settings {
+    width: 100%;
+}
+
+.right-settings {
+    width: 100%;
+}
+
+.save-button {
+    margin-left: 96px !important;
+}
