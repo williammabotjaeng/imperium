@@ -233,7 +233,8 @@ def register():
 @app.route("/home")
 def home():
     projects = Project.query.all()  
-    return render_template("home.html", projects=projects)
+    users = User.query.filter(User.id != current_user.id).filter(User.username.isnot(None)).all()
+    return render_template("home.html", projects=projects, users=users)
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
