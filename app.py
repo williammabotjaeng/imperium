@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 from bitcoinlib.wallets import Wallet
 from web3 import Web3
+from solcx import compile_standard
 
 import moment
 import requests
@@ -34,6 +35,28 @@ app.config["INFURA_PROJECT_ID"] = os.getenv("INFURA_PROJECT_ID")
 infura_id = app.config["INFURA_PROJECT_ID"]
 
 web3 = Web3(Web3.HTTPProvider(f"https://ropsten.infura.io/v3/{infura_id}"))
+
+with open('imperium_contract.sol', 'r') as f:
+    contract_code = f.read()
+
+compiled_sol = compile_standard({
+    "language": "Solidity",
+    "sources": {
+        "MyContract.sol": {
+            "content": contract_code
+        }
+    },
+    "settings": {
+        "outputSelection": {
+            "*": {
+                "*": ["abi", "evm.bytecode"]
+            }
+        }
+    }
+})
+
+contract_abi = compiled_sol['contracts']['imperium_contract.sol']['imperium_contact']['abi']
+contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['imperium_contract']['evm']['bytecode']['object']
 
 mail = Mail(app)
 
