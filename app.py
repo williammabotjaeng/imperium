@@ -15,6 +15,7 @@ from solcx import compile_standard
 import moment
 import requests
 import os
+import json 
 
 app = Flask(__name__)
 
@@ -42,7 +43,7 @@ with open('imperium_contract.sol', 'r') as f:
 compiled_sol = compile_standard({
     "language": "Solidity",
     "sources": {
-        "MyContract.sol": {
+        "imperium_contract.sol": {
             "content": contract_code
         }
     },
@@ -55,8 +56,16 @@ compiled_sol = compile_standard({
     }
 })
 
-contract_abi = compiled_sol['contracts']['imperium_contract.sol']['imperium_contact']['abi']
-contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['imperium_contract']['evm']['bytecode']['object']
+contract_abi = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['abi']
+contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['evm']['bytecode']['object']
+
+contract_data = {
+    'abi': contract_abi,
+    'bytecode': contract_bytecode
+}
+
+with open('contract.json', 'w') as f:
+    json.dump(contract_data, f)
 
 mail = Mail(app)
 
