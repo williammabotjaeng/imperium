@@ -99,13 +99,15 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
-
-
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
+    funding_goal = db.Column(db.Float, nullable=False)
+    current_funding = db.Column(db.Float, default=0)
+    vote_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
     project_votes = db.relationship('Vote', backref='project', lazy=True)
 
     def __repr__(self):
@@ -273,7 +275,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis230{current_user.id}"
+    wallet_name = f"TheImperiumKibisis2300{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 
