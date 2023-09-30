@@ -174,6 +174,19 @@ class ContactUsForm(FlaskForm):
     message = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, FloatField, IntegerField, FileField
+from wtforms.validators import DataRequired, URL
+
+class ProjectForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    funding_goal = FloatField('Funding Goal', validators=[DataRequired()])
+    current_funding = FloatField('Current Funding', default=0)
+    user_id = IntegerField('User ID', validators=[DataRequired()])
+    logo_image = FileField('Logo Image')
+    youtube_video_link = StringField('YouTube Video Link', validators=[URL()])
+
 class SettingsForm(FlaskForm):
     username = StringField('Username', validators=[Length(max=20)])
     address_line1 = StringField('Address Line 1')
