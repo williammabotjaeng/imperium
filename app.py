@@ -252,7 +252,8 @@ def home():
 
 @app.route('/settings', methods=['POST'])
 @login_required
-def settings(form):
+def settings():
+    form = SettingsForm(request.form)
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.address_line1 = form.address_line1.data

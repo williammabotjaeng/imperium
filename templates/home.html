@@ -159,26 +159,26 @@
         </div>
         <div class="tabs-panel" id="settings">
             <h4 class="h4 lead">Settings</h4>
-            <form method="POST" action="{{ url_for('settings') }}">
+            <form method="POST" action="{{ url_for('settings', form=settings_form) }}">
               {{ settings_form.hidden_tag() }}
               <div class="grid-container settings-container">
                 <div class="left-settings">
                         <div class="grid-x grid-padding-x">
                         <div class="cell">
                             {{ settings_form.username.label(class="form-label") }}
-                            {{ settings_form.username(class="form-control") }}
+                            {{ settings_form.username(value=current_user.username if current_user.username else '', class="form-control") }}
                         </div>
                         </div>
                         <div class="grid-x grid-padding-x">
                         <div class="cell">
                             {{ settings_form.address_line1.label(class="form-label") }}
-                            {{ settings_form.address_line1(class="form-control") }}
+                            {{ settings_form.address_line1(value=current_user.address_line1 if current_user.address_line1 else '', class="form-control") }}
                         </div>
                         </div>
                         <div class="grid-x grid-padding-x">
                         <div class="cell">
                             {{ settings_form.address_line2.label(class="form-label") }}
-                            {{ settings_form.address_line2(class="form-control") }}
+                            {{ settings_form.address_line2(value=current_user.address_line2 if current_user.address_line2 else '', class="form-control") }}
                         </div>
                     </div>
                 </div>
@@ -186,19 +186,19 @@
                     <div class="grid-x grid-padding-x">
                     <div class="cell">
                         {{ settings_form.city.label(class="form-label") }}
-                        {{ settings_form.city(class="form-control") }}
+                        {{ settings_form.city(value=current_user.city if current_user.city else '', class="form-control") }}
                     </div>
                     </div>
                     <div class="grid-x grid-padding-x">
                     <div class="cell">
                         {{ settings_form.postal_code.label(class="form-label") }}
-                        {{ settings_form.postal_code(class="form-control") }}
+                        {{ settings_form.postal_code(value=current_user.postal_code if current_user.postal_code else '', class="form-control") }}
                     </div>
                     </div>
                     <div class="grid-x grid-padding-x">
                     <div class="cell">
                         {{ settings_form.mobile_no.label(class="form-label") }}
-                        {{ settings_form.mobile_no(class="form-control") }}
+                        {{ settings_form.mobile_no(value=current_user.mobile_no if current_user.mobile_no else '', class="form-control") }}
                     </div>
                     </div>
                 </div>
