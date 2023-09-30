@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="form-container">
+    <h3>Create a Project</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-contents">
+            <div class="left-project">
+                <div>
+                    <label>{{ form.title.label }}</label>
+                    {{ form.title() }}
+                </div>
+                <div>
+                    <label>{{ form.description.label }}</label>
+                    {{ form.description(class="full-desc") }}
+                </div>
+            </div>
+            <div class="right-project">
+                <div>
+                    <label>{{ form.funding_goal.label }}</label>
+                    {{ form.funding_goal() }}
+                </div>
+                <div>
+                    <label>{{ form.current_funding.label }}</label>
+                    {{ form.current_funding() }}
+                </div>
+                <div>
+                    <label>{{ form.user_id.label }}</label>
+                    <input type="text" value="{{ current_user.id }}" readonly>
+                </div>
+                <div>
+                    <label>{{ form.logo_image.label }}</label>
+                    {{ form.logo_image() }}
+                </div>
+                <div>
+                    <label>{{ form.youtube_video_link.label }}</label>
+                    {{ form.youtube_video_link() }}
+                </div>
+            </div>
+        </div>
+        <div>
+            <input type="submit" class="button" value="Create Project">
+        </div>
+    </form>
+</div>
+{% endblock %}

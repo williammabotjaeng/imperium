@@ -107,6 +107,8 @@ class Project(db.Model):
     current_funding = db.Column(db.Float, default=0)
     vote_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    logo_image = db.Column(db.String(100), nullable=True)
+    youtube_video_link = db.Column(db.String(100), nullable=True)
 
     project_votes = db.relationship('Vote', backref='project', lazy=True)
 
@@ -280,6 +282,40 @@ def settings():
         db.session.commit()
         flash('Settings updated successfully!', 'success')
         return redirect(url_for('home'))
+
+@app.route('/create_project', methods=['GET', 'POST'])
+def create_project():
+    form = ProjectForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        # Process the form data and create a new project
+        title = form.title.data
+        description = form.description.data
+        funding_goal = form.funding_goal.data
+        current_funding = form.current_funding.data
+        user_id = form.user_id.data
+        logo_image = form.logo_image.data
+        youtube_video_link = form.youtube_video_link.data
+
+        # Create a new Project object
+        project = Project(
+            title=title,
+            description=description,
+            funding_goal=funding_goal,
+            current_funding=current_funding,
+            user_id=user_id,
+            logo_image=logo_image,
+            youtube_video_link=youtube_video_link
+        )
+
+        # Save the project to the database
+        db.session.add(project)
+        db.session.commit()
+
+        # Redirect to a success page or another route
+        return redirect(url_for('success'))
+
+    return render_template('create_project.html', form=form)
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
