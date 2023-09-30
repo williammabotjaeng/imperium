@@ -9,6 +9,7 @@ from wtforms.validators import InputRequired, Length, DataRequired, Email
 from dotenv import load_dotenv
 from datetime import datetime
 from bitcoinlib.wallets import Wallet
+from web3 import Web3
 
 import moment
 import requests
@@ -26,8 +27,13 @@ log_config_id = os.getenv("CONFIG_ID")
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  # Replace with your email address
-app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD") # Replace with your email password
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD") 
+app.config["INFURA_PROJECT_ID"] = os.getenv("INFURA_PROJECT_ID") 
+
+infura_id = app.config["INFURA_PROJECT_ID"]
+
+web3 = Web3(Web3.HTTPProvider(f"https://ropsten.infura.io/v3/{infura_id}"))
 
 mail = Mail(app)
 
