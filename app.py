@@ -76,6 +76,11 @@ login_manager.login_view = 'login'
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=True)
+    address_line1 = db.Column(db.String(100), unique=True, nullable=True)
+    address_line2 = db.Column(db.String(100), unique=True, nullable=True)
+    city = db.Column(db.String(100), unique=True, nullable=True)
+    postal_code = db.Column(db.String(100), unique=True, nullable=True)
+    mobile_no = db.Column(db.String(100), unique=True, nullable=True)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.String(100), nullable=True)
@@ -166,6 +171,14 @@ class ContactUsForm(FlaskForm):
     message = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
 
+class SettingsForm(FlaskForm):
+    username = StringField('Username', validators=[Length(max=20)])
+    address_line1 = StringField('Address Line 1')
+    address_line2 = StringField('Address Line 2')
+    city = StringField('City')
+    postal_code = StringField('Postal/Zip Code')
+    mobile_no = StringField('Mobile No.')
+
 @app.route("/")
 def index():
     if current_user.is_authenticated:
@@ -232,9 +245,24 @@ def register():
 
 @app.route("/home")
 def home():
+    settings_form = SettingsForm()
     projects = Project.query.all()  
     users = User.query.filter(User.id != current_user.id).filter(User.username.isnot(None)).all()
-    return render_template("home.html", projects=projects, users=users)
+    return render_template("home.html", projects=projects, users=users, settings_form=settings_form)
+
+@app.route('/settings', methods=['POST'])
+@login_required
+def settings(form):
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.address_line1 = form.address_line1.data
+        current_user.address_line2 = form.address_line2.data
+        current_user.city = form.city.data
+        current_user.postal_code = form.postal_code.data
+        current_user.mobile_no = form.mobile_no.data
+        db.session.commit()
+        flash('Settings updated successfully!', 'success')
+        return redirect(url_for('home'))
 
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 

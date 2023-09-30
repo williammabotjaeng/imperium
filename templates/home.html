@@ -158,7 +158,53 @@
             <p>This is the content of Analytics.</p>
         </div>
         <div class="tabs-panel" id="settings">
-            <p>This is the content of Settings.</p>
+            <h1>Settings</h1>
+            <form method="POST" action="{{ url_for('settings') }}">
+              {{ form.hidden_tag() }}
+              <div class="grid-container">
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.username.label(class="form-label") }}
+                    {{ form.username(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.address_line1.label(class="form-label") }}
+                    {{ form.address_line1(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.address_line2.label(class="form-label") }}
+                    {{ form.address_line2(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.city.label(class="form-label") }}
+                    {{ form.city(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.postal_code.label(class="form-label") }}
+                    {{ form.postal_code(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    {{ form.mobile_no.label(class="form-label") }}
+                    {{ form.mobile_no(class="form-control") }}
+                  </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                  <div class="cell">
+                    <button type="submit" class="button">Save</button>
+                  </div>
+                </div>
+              </div>
+            </form>
         </div>
     </div>
 </div>
