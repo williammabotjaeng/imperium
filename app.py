@@ -4,19 +4,15 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_wtf import FlaskForm
 from flask_mail import Message, Mail
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField, FloatField, IntegerField, FileField
-from wtforms.validators import InputRequired, Length, DataRequired, Email, URL
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField
+from wtforms.validators import InputRequired, Length, DataRequired, Email
 from dotenv import load_dotenv
 from datetime import datetime
 from bitcoinlib.wallets import Wallet
-from web3 import Web3
-from solcx import compile_standard
-from base64 import b64encode
 
 import moment
 import requests
 import os
-import json 
 
 app = Flask(__name__)
 
@@ -30,43 +26,8 @@ log_config_id = os.getenv("CONFIG_ID")
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
-app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  
-app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD") 
-app.config["INFURA_PROJECT_ID"] = os.getenv("INFURA_PROJECT_ID") 
-
-# infura_id = app.config["INFURA_PROJECT_ID"]
-
-# web3 = Web3(Web3.HTTPProvider(f"https://ropsten.infura.io/v3/{infura_id}"))
-
-# with open('imperium_contract.sol', 'r') as f:
-#     contract_code = f.read()
-
-# compiled_sol = compile_standard({
-#     "language": "Solidity",
-#     "sources": {
-#         "imperium_contract.sol": {
-#             "content": contract_code
-#         }
-#     },
-#     "settings": {
-#         "outputSelection": {
-#             "*": {
-#                 "*": ["abi", "evm.bytecode"]
-#             }
-#         }
-#     }
-# })
-
-# contract_abi = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['abi']
-# contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['evm']['bytecode']['object']
-
-# contract_data = {
-#     'abi': contract_abi,
-#     'bytecode': contract_bytecode
-# }
-
-# with open('contract.json', 'w') as f:
-#     json.dump(contract_data, f)
+app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")  # Replace with your email address
+app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD") # Replace with your email password
 
 mail = Mail(app)
 
@@ -77,11 +38,6 @@ login_manager.login_view = 'login'
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=True)
-    address_line1 = db.Column(db.String(100), nullable=True)
-    address_line2 = db.Column(db.String(100), nullable=True)
-    city = db.Column(db.String(100), nullable=True)
-    postal_code = db.Column(db.String(100), nullable=True)
-    mobile_no = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     balance = db.Column(db.String(100), nullable=True)
@@ -90,27 +46,21 @@ class User(UserMixin, db.Model):
     primary_network = db.Column(db.String(500), nullable=True)
     primary_account = db.Column(db.String(500), nullable=True)
     master_key = db.Column(db.String(500), unique=True, nullable=True)
-    voting_power = db.Column(db.Integer, default=0, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
     transactions = db.Column(db.PickleType, nullable=True)  
     accounts = db.Column(db.PickleType, nullable=True)  
-    assets_for_sale = db.Column(db.PickleType, nullable=True)  
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
+
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    funding_goal = db.Column(db.Float, nullable=False)
-    current_funding = db.Column(db.Float, nullable=False)
-    vote_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    logo_image = db.Column(db.LargeBinary, nullable=True) 
-    youtube_video_link = db.Column(db.String(100), nullable=True)
-
     project_votes = db.relationship('Vote', backref='project', lazy=True)
 
     def __repr__(self):
@@ -177,23 +127,6 @@ class ContactUsForm(FlaskForm):
     message = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
 
-class ProjectForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    funding_goal = FloatField('Funding Goal', validators=[DataRequired()])
-    current_funding = FloatField('Current Funding', default=0)
-    user_id = IntegerField('User ID')
-    logo_image = FileField('Logo Image')
-    youtube_video_link = StringField('YouTube Video Link', validators=[URL()])
-
-class SettingsForm(FlaskForm):
-    username = StringField('Username', validators=[Length(max=20)])
-    address_line1 = StringField('Address Line 1')
-    address_line2 = StringField('Address Line 2')
-    city = StringField('City')
-    postal_code = StringField('Postal/Zip Code')
-    mobile_no = StringField('Mobile No.')
-
 @app.route("/")
 def index():
     if current_user.is_authenticated:
@@ -238,7 +171,7 @@ def register():
                 flash('Username already exists. Please choose a different one.')
                 return redirect(url_for('login'))
 
-            new_user = User(email=email, password=generate_password_hash(password, method='sha256'), voting_power=1)
+            new_user = User(email=email, password=generate_password_hash(password, method='sha256'))
             db.session.add(new_user)
             db.session.commit()
           
@@ -260,140 +193,9 @@ def register():
 
 @app.route("/home")
 def home():
-    settings_form = SettingsForm()
     projects = Project.query.all()  
-    print(projects)
-    users = User.query.filter(User.id != current_user.id).filter(User.username.isnot(None)).all()
-    return render_template("home.html", projects=projects, users=users, settings_form=settings_form, b64encode=b64encode)
+    return render_template("home.html", projects=projects)
 
-@app.route('/settings', methods=['POST'])
-@login_required
-def settings():
-    form = SettingsForm(request.form)
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.address_line1 = form.address_line1.data
-        current_user.address_line2 = form.address_line2.data
-        current_user.city = form.city.data
-        current_user.postal_code = form.postal_code.data
-        current_user.mobile_no = form.mobile_no.data
-        db.session.commit()
-        flash('Settings updated successfully!', 'success')
-        return redirect(url_for('home'))
-    
-
-
-@app.route('/create_project', methods=['GET', 'POST'])
-@login_required
-def create_project():
-    form = ProjectForm()
-
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            # Process the form data and create a new project
-            title = form.title.data
-            description = form.description.data
-            funding_goal = form.funding_goal.data
-            current_funding = form.current_funding.data
-            image_file = request.files['logo_image']
-            youtube_video_link = form.youtube_video_link.data
-
-            image_data = image_file.read()
-
-            # Create a new Project object
-            project = Project(
-                title=title,
-                description=description,
-                funding_goal=funding_goal,
-                current_funding=current_funding,
-                user_id=current_user.id,
-                logo_image=image_data,
-                youtube_video_link=youtube_video_link
-            )
-
-            # Save the project to the database
-            db.session.add(project)
-            db.session.commit()
-            print("Saved to Database")
-
-            # Redirect to a success page or another route
-            return redirect(url_for('home'))
-
-    return render_template('create_project.html', form=form)
-
-@app.route('/project/<int:project_id>', methods=['GET'])
-@login_required
-def get_project(project_id):
-    form = ProjectForm()
-    project = Project.query.get(project_id)
-
-    if project:
-        return render_template('project.html', project=project, form=form)
-    else:
-        return 'Project not found', 404
-    
-@app.route('/edit_project/<int:project_id>', methods=['GET', 'POST'])
-@login_required
-def edit_project(project_id):
-    project = Project.query.get(project_id)
-
-    if not project:
-        return 'Project not found', 404
-
-    form = ProjectForm()
-
-    if form.validate_on_submit():
-        project.title = form.title.data
-        project.description = form.description.data
-        project.funding_goal = form.funding_goal.data
-        project.current_funding = form.current_funding.data
-        project.youtube_video_link = form.youtube_video_link.data
-
-        db.session.commit()
-        flash('Project updated successfully!', 'success')
-        return redirect(url_for('projects'))
-
-    elif request.method == 'GET':
-        form.title.data = project.title
-        form.description.data = project.description
-        form.funding_goal.data = project.funding_goal
-        form.current_funding.data = project.current_funding
-        form.youtube_video_link.data = project.youtube_video_link
-
-    return render_template('edit_project.html', project=project, form=form)
-
-@app.route('/vote_project/<int:project_id>', methods=['GET', 'POST'])
-@login_required
-def vote_project(project_id):
-    form = ProjectForm()
-    project = Project.query.get(project_id)
-
-    if not project:
-        return 'Project not found', 404
-
-    if current_user.voting_power:
-        # Decrease the current user's voting power
-        current_user.voting_power -= 1
-
-        # Increase the number of project votes
-        project.vote_count += 1
-
-        # Create a Vote object and save it to the database
-        vote = Vote(project_id=project.id, user_id=current_user.id, preference=project.id)
-        db.session.add(vote)
-
-        db.session.commit()
-        flash('Vote submitted successfully!', 'success')
-        return redirect(url_for('projects', project_id=project.id))# Set a default preference value
-
-    return render_template('vote_project.html', project=project, form=form)
-    
-@app.route("/projects", methods=['GET'])
-@login_required 
-def projects():
-    projects = Project.query.all()
-    return render_template('projects.html', projects=projects)
-    
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
 def create_wallet():
@@ -401,7 +203,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"ImperiumKibisis23100{current_user.id}"
+    wallet_name = f"TheImperiumKibisis00{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 

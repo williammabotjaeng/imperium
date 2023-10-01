@@ -9,5 +9,3 @@ gunicorn
 Flask-Mail
 moment
 bitcoinlib
-web3
-py-solc-x
