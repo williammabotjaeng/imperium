@@ -131,7 +131,7 @@
                             <a href="{{ url_for('edit_project', project_id=project.id) }}">Edit&nbsp;&nbsp;&nbsp;<i class="fi-pencil"></i></a>
                         {% endif %}
                         <a href="{{ url_for('get_project', project_id=project.id) }}">View&nbsp;&nbsp;&nbsp;<i class="fi-eye"></i></a>
-                        <a href="">Vote&nbsp;&nbsp;&nbsp;<i class="fi-like"></i></a>
+                        <a href="{{ url_for('vote_project', project_id=project.id) }}">Vote&nbsp;&nbsp;&nbsp;<i class="fi-like"></i></a>
                       </td>
                     </tr>
                   {% endfor %}

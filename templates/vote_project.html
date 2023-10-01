@@ -4,7 +4,7 @@
 {% block content %}
 <div class="form-container">
     <h3>Project</h3>
-    <form action="{{ url_for('create_project') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ url_for('create_project', project_id=project.id) }}" method="POST" enctype="multipart/form-data">
         {{ form.csrf_token  }}
         {{ form.youtube_video_link.errors if form.youtube_video_link.errors else "" }}
         <div class="form-contents">

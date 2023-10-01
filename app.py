@@ -351,7 +351,7 @@ def edit_project(project_id):
 
         db.session.commit()
         flash('Project updated successfully!', 'success')
-        return redirect(url_for('project_details', project_id=project.id))
+        return redirect(url_for('projects'))
 
     elif request.method == 'GET':
         form.title.data = project.title
@@ -372,6 +372,12 @@ def vote_project(project_id):
         return render_template('edit_project.html', project=project, form=form)
     else:
         return 'Project not found', 404
+    
+@app.route("/projects", methods=['GET'])
+@login_required 
+def projects():
+    projects = Project.query.all()
+    return render_template('projects.html', projects=projects)
     
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
