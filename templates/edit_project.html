@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="form-container">
+    <h3>Project</h3>
+    <form action="{{ url_for('edit_project', 'project.id') }}" method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token  }}
+        {{ form.youtube_video_link.errors if form.youtube_video_link.errors else "" }}
+        <div class="form-contents">
+            <div class="left-project">
+                <div>
+                    <label>{{ form.title.label }}</label>
+                    {{ form.title(value=project.title) }}
+                </div>
+                <div>
+                    <label>{{ form.description.label }}</label>
+                    {{ form.description(class="full-desc", value=project.description) }}
+                </div>
+            </div>
+            <div class="right-project">
+                <div>
+                    <label>{{ form.funding_goal.label }}</label>
+                    {{ form.funding_goal(value=project.funding_goal) }}
+                </div>
+                <div>
+                    <label>{{ form.current_funding.label }}</label>
+                    {{ form.current_funding(value=project.current_funding) }}
+                </div>
+                <div>
+                    <label>{{ form.user_id.label }}</label>
+                    <input type="number" value="{{ current_user.id }}" readonly>
+                </div>
+                <div>
+                    <label>{{ form.youtube_video_link.label }}</label>
+                    {{ form.youtube_video_link(placeholder="http:// format required", value=project.youtube_video_link) }}
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="submit" class="button">Save Project</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

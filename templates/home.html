@@ -103,9 +103,40 @@
             </div>
             
             {% if projects|length > 0 %}
-                    {% for project in projects %}
-                        <p class="lead h5"><a href="">{{ project }}</a></p>
-                    {% endfor %}
+            <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Funding Goal</th>
+                    <th>Current Funding</th>
+                    <th>Vote Count</th>
+                    <th>Creator</th>
+                    <th>YouTube Video Link</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for project in projects %}
+                    <tr>
+                      <td>{{ project.title }}</td>
+                      <td>{{ project.description }}</td>
+                      <td>{{ project.funding_goal }}</td>
+                      <td>{{ project.current_funding }}</td>
+                      <td>{{ project.vote_count }}</td>
+                      <td>{{ project.user_id }}</td>
+                      <td>{{ project.youtube_video_link }}</td>
+                      <td class="actions-cell">
+                        {% if project.user_id == current_user.id %}
+                            <a href="{{ url_for('edit_project', project_id=project.id) }}">Edit&nbsp;&nbsp;&nbsp;<i class="fi-pencil"></i></a>
+                        {% endif %}
+                        <a href="{{ url_for('get_project', project_id=project.id) }}">View&nbsp;&nbsp;&nbsp;<i class="fi-eye"></i></a>
+                        <a href="">Vote&nbsp;&nbsp;&nbsp;<i class="fi-like"></i></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% else %}
             <div class="projects-empty-state">
                 <h3>There are Currently no Projects!</h3>

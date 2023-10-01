@@ -11,6 +11,7 @@ from datetime import datetime
 from bitcoinlib.wallets import Wallet
 from web3 import Web3
 from solcx import compile_standard
+from base64 import b64encode
 
 import moment
 import requests
@@ -263,7 +264,7 @@ def home():
     projects = Project.query.all()  
     print(projects)
     users = User.query.filter(User.id != current_user.id).filter(User.username.isnot(None)).all()
-    return render_template("home.html", projects=projects, users=users, settings_form=settings_form)
+    return render_template("home.html", projects=projects, users=users, settings_form=settings_form, b64encode=b64encode)
 
 @app.route('/settings', methods=['POST'])
 @login_required
@@ -279,31 +280,22 @@ def settings():
         db.session.commit()
         flash('Settings updated successfully!', 'success')
         return redirect(url_for('home'))
+    
+
 
 @app.route('/create_project', methods=['GET', 'POST'])
 @login_required
 def create_project():
     form = ProjectForm()
-    print("Request Method", request.method)
-    print("Form Validation", form.validate_on_submit())
-    print(type(form.title.data))
-    print(type(form.description.data))
-    print(type(form.funding_goal.data))
-    print(type(form.current_funding.data))
-    print(type(form.logo_image.data))
-    print(type(form.youtube_video_link.data))
-    print(type(form.user_id.data))
 
     if request.method == 'POST':
         if form.validate_on_submit():
-            print("Form Sending")
             # Process the form data and create a new project
             title = form.title.data
             description = form.description.data
             funding_goal = form.funding_goal.data
             current_funding = form.current_funding.data
-            user_id = form.user_id.data
-            image_file = form.logo_image.data
+            image_file = request.files['logo_image']
             youtube_video_link = form.youtube_video_link.data
 
             image_data = image_file.read()
@@ -329,6 +321,58 @@ def create_project():
 
     return render_template('create_project.html', form=form)
 
+@app.route('/project/<int:project_id>', methods=['GET'])
+@login_required
+def get_project(project_id):
+    form = ProjectForm()
+    project = Project.query.get(project_id)
+
+    if project:
+        return render_template('project.html', project=project, form=form)
+    else:
+        return 'Project not found', 404
+    
+@app.route('/edit_project/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def edit_project(project_id):
+    project = Project.query.get(project_id)
+
+    if not project:
+        return 'Project not found', 404
+
+    form = ProjectForm()
+
+    if form.validate_on_submit():
+        project.title = form.title.data
+        project.description = form.description.data
+        project.funding_goal = form.funding_goal.data
+        project.current_funding = form.current_funding.data
+        project.youtube_video_link = form.youtube_video_link.data
+
+        db.session.commit()
+        flash('Project updated successfully!', 'success')
+        return redirect(url_for('project_details', project_id=project.id))
+
+    elif request.method == 'GET':
+        form.title.data = project.title
+        form.description.data = project.description
+        form.funding_goal.data = project.funding_goal
+        form.current_funding.data = project.current_funding
+        form.youtube_video_link.data = project.youtube_video_link
+
+    return render_template('edit_project.html', project=project, form=form)
+
+@app.route('/vote_project/<int:project_id>', methods=['GET'])
+@login_required
+def vote_project(project_id):
+    form = ProjectForm()
+    project = Project.query.get(project_id)
+
+    if project:
+        return render_template('edit_project.html', project=project, form=form)
+    else:
+        return 'Project not found', 404
+    
 @app.route("/create_wallet", methods=['GET', 'POST'])
 @login_required 
 def create_wallet():
@@ -336,7 +380,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis23100{current_user.id}"
+    wallet_name = f"ImperiumKibisis23100{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 

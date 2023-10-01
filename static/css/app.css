@@ -306,3 +306,13 @@ a.nav-link-text {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.actions-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.actions-cell-item {
+    padding: 10px;
+}
