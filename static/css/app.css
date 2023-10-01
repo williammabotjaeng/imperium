@@ -300,3 +300,9 @@ a.nav-link-text {
 .full-desc {
     height: 264px;
 }
+
+.project-top-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

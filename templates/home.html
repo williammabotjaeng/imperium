@@ -97,7 +97,11 @@
           {% endif %}
         </div>
         <div class="tabs-panel" id="projects">
-            <h4 class="h4">Project Proposals</h4>
+            <div class="project-top-nav">
+                <h4 class="h4">Project Proposals</h4>
+                <a href="{{ url_for('create_project' )}}" class="button">Create a Project</a>
+            </div>
+            
             {% if projects|length > 0 %}
                     {% for project in projects %}
                         <p class="lead h5"><a href="">{{ project }}</a></p>

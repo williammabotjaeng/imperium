@@ -4,6 +4,7 @@
     <h3>Create a Project</h3>
     <form action="{{ url_for('create_project') }}" method="POST" enctype="multipart/form-data">
         {{ form.csrf_token  }}
+        {{ form.youtube_video_link.errors if form.youtube_video_link.errors else "" }}
         <div class="form-contents">
             <div class="left-project">
                 <div>
