@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_wtf import FlaskForm
 from flask_mail import Message, Mail
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField
-from wtforms.validators import InputRequired, Length, DataRequired, Email
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, TextAreaField, FloatField, IntegerField, FileField
+from wtforms.validators import InputRequired, Length, DataRequired, Email, URL
 from dotenv import load_dotenv
 from datetime import datetime
 from bitcoinlib.wallets import Wallet
@@ -104,10 +104,10 @@ class Project(db.Model):
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     funding_goal = db.Column(db.Float, nullable=False)
-    current_funding = db.Column(db.Float, default=0)
+    current_funding = db.Column(db.Float, nullable=False)
     vote_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    logo_image = db.Column(db.String(100), nullable=True)
+    logo_image = db.Column(db.LargeBinary, nullable=True) 
     youtube_video_link = db.Column(db.String(100), nullable=True)
 
     project_votes = db.relationship('Vote', backref='project', lazy=True)
@@ -176,16 +176,12 @@ class ContactUsForm(FlaskForm):
     message = TextAreaField("Message", validators=[DataRequired()])
     submit = SubmitField("Send")
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, FloatField, IntegerField, FileField
-from wtforms.validators import DataRequired, URL
-
 class ProjectForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     funding_goal = FloatField('Funding Goal', validators=[DataRequired()])
     current_funding = FloatField('Current Funding', default=0)
-    user_id = IntegerField('User ID', validators=[DataRequired()])
+    user_id = IntegerField('User ID')
     logo_image = FileField('Logo Image')
     youtube_video_link = StringField('YouTube Video Link', validators=[URL()])
 
@@ -265,6 +261,7 @@ def register():
 def home():
     settings_form = SettingsForm()
     projects = Project.query.all()  
+    print(projects)
     users = User.query.filter(User.id != current_user.id).filter(User.username.isnot(None)).all()
     return render_template("home.html", projects=projects, users=users, settings_form=settings_form)
 
@@ -284,36 +281,51 @@ def settings():
         return redirect(url_for('home'))
 
 @app.route('/create_project', methods=['GET', 'POST'])
+@login_required
 def create_project():
     form = ProjectForm()
+    print("Request Method", request.method)
+    print("Form Validation", form.validate_on_submit())
+    print(type(form.title.data))
+    print(type(form.description.data))
+    print(type(form.funding_goal.data))
+    print(type(form.current_funding.data))
+    print(type(form.logo_image.data))
+    print(type(form.youtube_video_link.data))
+    print(type(form.user_id.data))
 
-    if request.method == 'POST' and form.validate_on_submit():
-        # Process the form data and create a new project
-        title = form.title.data
-        description = form.description.data
-        funding_goal = form.funding_goal.data
-        current_funding = form.current_funding.data
-        user_id = form.user_id.data
-        logo_image = form.logo_image.data
-        youtube_video_link = form.youtube_video_link.data
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            print("Form Sending")
+            # Process the form data and create a new project
+            title = form.title.data
+            description = form.description.data
+            funding_goal = form.funding_goal.data
+            current_funding = form.current_funding.data
+            user_id = form.user_id.data
+            image_file = form.logo_image.data
+            youtube_video_link = form.youtube_video_link.data
 
-        # Create a new Project object
-        project = Project(
-            title=title,
-            description=description,
-            funding_goal=funding_goal,
-            current_funding=current_funding,
-            user_id=user_id,
-            logo_image=logo_image,
-            youtube_video_link=youtube_video_link
-        )
+            image_data = image_file.read()
 
-        # Save the project to the database
-        db.session.add(project)
-        db.session.commit()
+            # Create a new Project object
+            project = Project(
+                title=title,
+                description=description,
+                funding_goal=funding_goal,
+                current_funding=current_funding,
+                user_id=current_user.id,
+                logo_image=image_data,
+                youtube_video_link=youtube_video_link
+            )
 
-        # Redirect to a success page or another route
-        return redirect(url_for('success'))
+            # Save the project to the database
+            db.session.add(project)
+            db.session.commit()
+            print("Saved to Database")
+
+            # Redirect to a success page or another route
+            return redirect(url_for('home'))
 
     return render_template('create_project.html', form=form)
 
@@ -324,7 +336,7 @@ def create_wallet():
         return redirect(url_for('home')) 
 
     # Generate wallet and get the address
-    wallet_name = f"TheImperiumKibisis2300{current_user.id}"
+    wallet_name = f"TheImperiumKibisis23100{current_user.id}"
     wallet = Wallet.create(wallet_name)
     wallet_address = wallet.get_key().address
 

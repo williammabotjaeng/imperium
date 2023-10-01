@@ -2,8 +2,8 @@
 {% block content %}
 <div class="form-container">
     <h3>Create a Project</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
+    <form action="{{ url_for('create_project') }}" method="POST" enctype="multipart/form-data">
+        {{ form.csrf_token  }}
         <div class="form-contents">
             <div class="left-project">
                 <div>
@@ -26,7 +26,7 @@
                 </div>
                 <div>
                     <label>{{ form.user_id.label }}</label>
-                    <input type="text" value="{{ current_user.id }}" readonly>
+                    <input type="number" value="{{ current_user.id }}" readonly>
                 </div>
                 <div>
                     <label>{{ form.logo_image.label }}</label>
@@ -34,12 +34,12 @@
                 </div>
                 <div>
                     <label>{{ form.youtube_video_link.label }}</label>
-                    {{ form.youtube_video_link() }}
+                    {{ form.youtube_video_link(placeholder="http:// format required") }}
                 </div>
             </div>
         </div>
         <div>
-            <input type="submit" class="button" value="Create Project">
+            <button type="submit" class="button">Create Project</button>
         </div>
     </form>
 </div>
