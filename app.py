@@ -34,39 +34,39 @@ app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD") 
 app.config["INFURA_PROJECT_ID"] = os.getenv("INFURA_PROJECT_ID") 
 
-infura_id = app.config["INFURA_PROJECT_ID"]
+# infura_id = app.config["INFURA_PROJECT_ID"]
 
-web3 = Web3(Web3.HTTPProvider(f"https://ropsten.infura.io/v3/{infura_id}"))
+# web3 = Web3(Web3.HTTPProvider(f"https://ropsten.infura.io/v3/{infura_id}"))
 
-with open('imperium_contract.sol', 'r') as f:
-    contract_code = f.read()
+# with open('imperium_contract.sol', 'r') as f:
+#     contract_code = f.read()
 
-compiled_sol = compile_standard({
-    "language": "Solidity",
-    "sources": {
-        "imperium_contract.sol": {
-            "content": contract_code
-        }
-    },
-    "settings": {
-        "outputSelection": {
-            "*": {
-                "*": ["abi", "evm.bytecode"]
-            }
-        }
-    }
-})
+# compiled_sol = compile_standard({
+#     "language": "Solidity",
+#     "sources": {
+#         "imperium_contract.sol": {
+#             "content": contract_code
+#         }
+#     },
+#     "settings": {
+#         "outputSelection": {
+#             "*": {
+#                 "*": ["abi", "evm.bytecode"]
+#             }
+#         }
+#     }
+# })
 
-contract_abi = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['abi']
-contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['evm']['bytecode']['object']
+# contract_abi = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['abi']
+# contract_bytecode = compiled_sol['contracts']['imperium_contract.sol']['Imperium']['evm']['bytecode']['object']
 
-contract_data = {
-    'abi': contract_abi,
-    'bytecode': contract_bytecode
-}
+# contract_data = {
+#     'abi': contract_abi,
+#     'bytecode': contract_bytecode
+# }
 
-with open('contract.json', 'w') as f:
-    json.dump(contract_data, f)
+# with open('contract.json', 'w') as f:
+#     json.dump(contract_data, f)
 
 mail = Mail(app)
 
