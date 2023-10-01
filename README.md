@@ -3,11 +3,11 @@ The Decentralized Angel Investor Bitcoin Exchange: Innovating DeFi, angel invest
 
 To Run the Project, You can git clone and run as a Normal Flask App.
 
-- source imperium/bin/Activate
-- pip install -r requirements.txt
-- export FLASK_APP=app.py
-- export FLASK_DEBUG=1
-- flask run
+- <pre>source imperium/bin/Activate</pre>
+- <pre>pip install -r requirements.txt</pre>
+- <pre>export FLASK_APP=app.py</pre>
+- <pre>export FLASK_DEBUG=1</pre>
+- <pre>flask run</pre>
 
 - The App should run on localhost:5000
 
