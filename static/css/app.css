@@ -222,3 +222,107 @@ a.nav-link-text {
     text-align: center;
     padding: 40px;
 }
+
+.ecommerce-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.main-voting {
+    text-align: center;
+}
+
+.text-success {
+    color: #157539 !important;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.left-settings {
+    width: 100%;
+}
+
+.right-settings {
+    width: 100%;
+}
+
+.save-button {
+    margin-left: 96px !important;
+}
+
+.docs-layout {
+    padding: 20px;
+    scroll-behavior: auto;
+}
+
+.form-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.form-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+.form-container input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.form-contents {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 10px;
+}
+
+.left-project {
+    width: 100%;
+    margin: 5px;
+}
+
+.right-project {
+    width: 100%;
+    margin: 5px;
+}
+
+.full-desc {
+    height: 264px;
+}
+
+.project-top-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.actions-cell {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.actions-cell-item {
+    padding: 10px;
+}
+
+.projects-content {
+    padding: 20px;
+}
+
+.top-nav-peers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

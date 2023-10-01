@@ -97,57 +97,156 @@
           {% endif %}
         </div>
         <div class="tabs-panel" id="projects">
-            <h4 class="h4">Project Proposals</h4>
+            <div class="project-top-nav">
+                <h4 class="h4">Project Proposals</h4>
+                <a href="{{ url_for('create_project' )}}" class="button">Create a Project</a>
+            </div>
+            
             {% if projects|length > 0 %}
-                    {% for project in projects %}
-                        <p class="lead h5"><a href="">{{ project }}</a></p>
-                    {% endfor %}
+            <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Funding Goal</th>
+                    <th>Current Funding</th>
+                    <th>Vote Count</th>
+                    <th>Creator</th>
+                    <th>YouTube Video Link</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for project in projects %}
+                    <tr>
+                      <td>{{ project.title }}</td>
+                      <td>{{ project.description }}</td>
+                      <td>{{ project.funding_goal }}</td>
+                      <td>{{ project.current_funding }}</td>
+                      <td>{{ project.vote_count }}</td>
+                      <td>{{ project.user_id }}</td>
+                      <td>{{ project.youtube_video_link }}</td>
+                      <td class="actions-cell">
+                        {% if project.user_id == current_user.id %}
+                            <a href="{{ url_for('edit_project', project_id=project.id) }}">Edit&nbsp;&nbsp;&nbsp;<i class="fi-pencil"></i></a>
+                        {% endif %}
+                        <a href="{{ url_for('get_project', project_id=project.id) }}">View&nbsp;&nbsp;&nbsp;<i class="fi-eye"></i></a>
+                        <a href="{{ url_for('vote_project', project_id=project.id) }}">Vote&nbsp;&nbsp;&nbsp;<i class="fi-like"></i></a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% else %}
             <div class="projects-empty-state">
                 <h3>There are Currently no Projects!</h3>
                 <br>
-                <h4><a href="#">Create or Refer a New Project?</a></h4>
+                <h4><a href="{{ url_for('create_project') }}">Create or Refer a New Project?</a></h4>
             </div>
             {% endif %}
         </div>
-        <div class="tabs-panel" id="voting">
-            <div class="ecommerce-section">
-                <h2>Votes</h2>
-                <p class="vote-price">One vote is worth 0.01 Bitcoin</p>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Package</h3>
-                  <p class="description">Get a package of 100 votes</p>
-                  <p class="price">Price: 1 Bitcoin</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Bundle</h3>
-                  <p class="description">Get a bundle of 500 votes</p>
-                  <p class="price">Price: 5 Bitcoins</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
-                <div class="product">
-                  <img src="vote-image.jpg" alt="Vote Image">
-                  <h3>Vote Mega Pack</h3>
-                  <p class="description">Get a mega pack of 1000 votes</p>
-                  <p class="price">Price: 10 Bitcoins</p>
-                  <button class="add-to-cart">Add to Cart</button>
-                </div>
+        <div class="tabs-panel main-voting" id="voting">
+            <h5 class="h5 lead text-success">You Currently have no Votes Purchased</h5>
+            <br>
+            <div class="ecommerce-section row small-up-1 medium-up-3">
+              <div class="column">
+                <img src="{{ url_for('static', filename='images/vote-image-1.jpg') }}" alt="Vote Image">
+                <h3>Vote Basic Package</h3>
+                <p class="description">Get a single vote</p>
+                <p class="price">Price: 0.01 Bitcoin</p>
+                <button class="button add-to-cart success">Add to Cart</button>
               </div>
-        </div>
+              <div class="column">
+                <img src="{{ url_for('static', filename='images/vote-image-2.jpg') }}" alt="Vote Image">
+                <h3>Vote Centurion Pack</h3>
+                <p class="description">Get a bundle of 10 votes</p>
+                <p class="price">Price: 0.1 Bitcoin</p>
+                <button class="button add-to-cart success">Add to Cart</button>
+              </div>
+              <div class="column">
+                <img src="{{ url_for('static', filename='images/vote-image-3.jpg') }}" alt="Vote Image">
+                <h3>Vote Mega Pack</h3>
+                <p class="description">Get a mega pack of 20 votes</p>
+                <p class="price">Price: 0.2 Bitcoins</p>
+                <button class="button add-to-cart success">Add to Cart</button>
+              </div>
+            </div>
+          </div>          
         <div class="tabs-panel" id="trading">
-            <p>This is the content of Trading.</p>
+            <div class="top-nav-peers">
+                 <h4 class="h4">Peers</h4>
+                 <button class="button">Create an Offer</button>
+            </div>
+            {% if users|length > 0 %}
+                    {% for user in users %}
+                        <p class="lead h5"><a href="">{{ user.username }}</a></p>
+                    {% endfor %}
+            {% else %}
+            <div class="projects-empty-state">
+                <h3>There are Currently no Users to Trade with!</h3>
+                <br>
+                <h4><a href="#">Refer a friend?</a></h4>
+            </div>
+            {% endif %}
         </div>
         <div class="tabs-panel" id="notifications">
-            <p>This is the content of Notifications.</p>
+            <p>Coming Soon.</p>
         </div>
         <div class="tabs-panel" id="analytics">
-            <p>This is the content of Analytics.</p>
+            <p>Comming Soon.</p>
         </div>
         <div class="tabs-panel" id="settings">
-            <p>This is the content of Settings.</p>
+            <h4 class="h4 lead">Settings</h4>
+            <form method="POST" action="{{ url_for('settings', form=settings_form) }}">
+              {{ settings_form.hidden_tag() }}
+              <div class="grid-container settings-container">
+                <div class="left-settings">
+                        <div class="grid-x grid-padding-x">
+                        <div class="cell">
+                            {{ settings_form.username.label(class="form-label") }}
+                            {{ settings_form.username(value=current_user.username if current_user.username else '', class="form-control") }}
+                        </div>
+                        </div>
+                        <div class="grid-x grid-padding-x">
+                        <div class="cell">
+                            {{ settings_form.address_line1.label(class="form-label") }}
+                            {{ settings_form.address_line1(value=current_user.address_line1 if current_user.address_line1 else '', class="form-control") }}
+                        </div>
+                        </div>
+                        <div class="grid-x grid-padding-x">
+                        <div class="cell">
+                            {{ settings_form.address_line2.label(class="form-label") }}
+                            {{ settings_form.address_line2(value=current_user.address_line2 if current_user.address_line2 else '', class="form-control") }}
+                        </div>
+                    </div>
+                </div>
+                <div class="right-settings">
+                    <div class="grid-x grid-padding-x">
+                    <div class="cell">
+                        {{ settings_form.city.label(class="form-label") }}
+                        {{ settings_form.city(value=current_user.city if current_user.city else '', class="form-control") }}
+                    </div>
+                    </div>
+                    <div class="grid-x grid-padding-x">
+                    <div class="cell">
+                        {{ settings_form.postal_code.label(class="form-label") }}
+                        {{ settings_form.postal_code(value=current_user.postal_code if current_user.postal_code else '', class="form-control") }}
+                    </div>
+                    </div>
+                    <div class="grid-x grid-padding-x">
+                    <div class="cell">
+                        {{ settings_form.mobile_no.label(class="form-label") }}
+                        {{ settings_form.mobile_no(value=current_user.mobile_no if current_user.mobile_no else '', class="form-control") }}
+                    </div>
+                    </div>
+                </div>
+              </div>
+              <div class="grid-x grid-padding-x">
+                <div class="cell">
+                  <button type="submit" class="button save-button">Save Settings</button>
+                </div>
+              </div>
+            </form>
         </div>
     </div>
 </div>
