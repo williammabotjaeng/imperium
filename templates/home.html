@@ -173,7 +173,10 @@
             </div>
           </div>          
         <div class="tabs-panel" id="trading">
-            <h4 class="h4">Peers</h4>
+            <div class="top-nav-peers">
+                 <h4 class="h4">Peers</h4>
+                 <button class="button">Create an Offer</button>
+            </div>
             {% if users|length > 0 %}
                     {% for user in users %}
                         <p class="lead h5"><a href="">{{ user.username }}</a></p>

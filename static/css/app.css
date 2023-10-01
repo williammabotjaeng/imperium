@@ -320,3 +320,9 @@ a.nav-link-text {
 .projects-content {
     padding: 20px;
 }
+
+.top-nav-peers {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
