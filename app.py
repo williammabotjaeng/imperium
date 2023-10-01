@@ -90,7 +90,7 @@ class User(UserMixin, db.Model):
     primary_network = db.Column(db.String(500), nullable=True)
     primary_account = db.Column(db.String(500), nullable=True)
     master_key = db.Column(db.String(500), unique=True, nullable=True)
-    voting_power = db.Column(db.Integer, nullable=True)
+    voting_power = db.Column(db.Integer, default=0, nullable=True)
     user_votes = db.relationship('Vote', backref='user', lazy=True)
     projects = db.relationship('Project', backref='user', lazy=True)
     transactions = db.Column(db.PickleType, nullable=True)  
@@ -238,7 +238,7 @@ def register():
                 flash('Username already exists. Please choose a different one.')
                 return redirect(url_for('login'))
 
-            new_user = User(email=email, password=generate_password_hash(password, method='sha256'))
+            new_user = User(email=email, password=generate_password_hash(password, method='sha256'), voting_power=1)
             db.session.add(new_user)
             db.session.commit()
           
@@ -362,16 +362,31 @@ def edit_project(project_id):
 
     return render_template('edit_project.html', project=project, form=form)
 
-@app.route('/vote_project/<int:project_id>', methods=['GET'])
+@app.route('/vote_project/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def vote_project(project_id):
     form = ProjectForm()
     project = Project.query.get(project_id)
 
-    if project:
-        return render_template('edit_project.html', project=project, form=form)
-    else:
+    if not project:
         return 'Project not found', 404
+
+    if current_user.voting_power:
+        # Decrease the current user's voting power
+        current_user.voting_power -= 1
+
+        # Increase the number of project votes
+        project.vote_count += 1
+
+        # Create a Vote object and save it to the database
+        vote = Vote(project_id=project.id, user_id=current_user.id, preference=project.id)
+        db.session.add(vote)
+
+        db.session.commit()
+        flash('Vote submitted successfully!', 'success')
+        return redirect(url_for('projects', project_id=project.id))# Set a default preference value
+
+    return render_template('vote_project.html', project=project, form=form)
     
 @app.route("/projects", methods=['GET'])
 @login_required 
