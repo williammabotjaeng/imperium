@@ -244,10 +244,10 @@ def register():
           
             # Send email to the new user
             msg = Message(
-                subject="Welcome to TopoLock!",
+                subject="Welcome to Imperium!",
                 sender=app.config["MAIL_USERNAME"],
                 recipients=[email],
-                body=f"Hi {email},\n\nThank you for registering on our website. We are excited to have you as a member!\n\nBest regards,\nTopoLock Team"
+                body=f"Hi {email},\n\nThank you for registering on our website. We are excited to have you as a member!\n\nBest regards,\Imperium Team"
             )
             mail.send(msg)
 
